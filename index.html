@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Acamalin — Restaurante en Xico, Veracruz. Cocina tradicional con ingredientes locales. Reserva tu mesa." />
+  <title>Restaurante Acamalin</title>
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+<!-- Open Graph (para Facebook, Instagram, WhatsApp) -->
+<meta property="og:title" content="Restaurante Acamalin">
+<meta property="og:description" content="Cocina tradicional en Xico, Veracruz. Sabor auténtico y ambiente familiar.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://acamalinrestaurante.netlify.app">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTknHPz4Ycs9YGF2syOJxZU-HZJr-bWcm3TAw&s">
+
+  <!-- Preload fuentes -->
+  <link rel="preload" href="./fuentes/monas/MonasDemo-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fuentes/neue/BaseNeueTrial-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <style>
+    :root{
+      --beige: #EFE5C3;
+      --vino: #3B0014;
+      --verde-seco: #697452;
+      --verde-oscuro: #01291B;
+
+      --max-width: 1200px;
+      --gap: 24px;
+      --shadow-strong: 0 8px 30px rgba(18,18,18,0.18);
+    }
+
+    /* Fuentes  */
+    @font-face{
+      font-family:'Monas';
+      src: url('./fuentes/monas/MonasDemo-Regular.woff2') format('woff2');
+      font-display:swap;
+      font-weight:400;
+      font-style:normal;
+    }
+    @font-face{
+      font-family:'BaseNeue';
+      src: url('./fuentes/neue/BaseNeueTrial-Regular.woff2') format('woff2');
+      font-display:swap;
+      font-weight:400;
+      font-style:normal;
+    }
+
+    /* Reset ligero */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'BaseNeue', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      font-weight:300;
+      color:var(--verde-oscuro);
+      background: var(--beige);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block; height:auto}
+
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+ header {
+  position: fixed;
+  top: 0;
+  left: 0;      /* IMPORTANTE */
+  width: 100%;  /* IMPORTANTE */
+  z-index: 60;
+  background: linear-gradient(180deg, rgba(59,0,20,0.98), rgba(59,0,20,0.95));
+  color: var(--beige);
+  backdrop-filter: blur(4px);
+}
+
+    
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:var(--gap);
+      padding: 12px 20px;
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+    .logo{ width:140px; height:auto; display:block; }
+
+    nav.desktop{ display:flex; gap:18px; align-items:center; font-weight:700; }
+    nav.desktop a{ padding:8px 12px; border-radius:8px; transition:all .18s }
+    nav.desktop a:hover{ background: rgba(255,255,255,0.03); transform:translateY(-2px) }
+
+    /* Mobile toggle */
+    .mobile-toggle{ display:none; background:transparent; border:0; color:var(--beige); font-size:22px; cursor:pointer }
+
+    /* Mobile panel */
+    .mobile-panel{ position:fixed; inset:0; display:none; z-index:120; align-items:flex-start; justify-content:flex-end; }
+    .mobile-panel.open{ display:flex; }
+    .mobile-panel .overlay{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
+    .mobile-panel .panel{ width:320px; max-width:92vw; height:100%; background:linear-gradient(180deg, rgba(59,0,20,0.98), rgba(59,0,20,0.95)); color:var(--beige); padding:20px; overflow:auto; transform:translateX(0); }
+    .mobile-panel .close{ background:transparent; border:0; color:var(--beige); font-size:20px; cursor:pointer }
+    .mobile-panel nav{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+    .mobile-panel a{ padding:10px 6px; border-radius:6px; }
+
+    /* Hero */
+    .hero{ min-height:72vh; display:flex; align-items:center; color:var(--beige); position:relative; overflow:hidden; }
+    .hero .overlay{ position:absolute; inset:0; background: linear-gradient(180deg, rgba(1,41,27,0.45) 0%, rgba(59,0,20,0.45) 60%); z-index:1; }
+    .hero-bg{ position:absolute; inset:0; z-index:0; background-image: url('./img/Foto\ xico.jpg'); background-size:cover; background-position:center; filter: saturate(.95) contrast(.92); transform: scale(1.03); }
+    .hero .content{ position:relative; z-index:2; width:100%; padding:60px 20px; }
+    .hero .row{ display:flex; gap:40px; align-items:center; justify-content:space-between; max-width:1100px; margin:0 auto; flex-wrap:wrap; }
+    .hero .left{ flex:1 1 520px; color:var(--beige); text-shadow: 0 6px 24px rgba(0,0,0,0.45); }
+    .hero h1{ font-family:'Monas', serif; font-weight:400; font-size:clamp(40px, 6vw, 72px); line-height:0.92; margin:0 0 14px 0; color:var(--beige); }
+    .hero p.lead{ margin:0 0 22px 0; font-size:clamp(16px, 2vw, 20px); max-width:720px; opacity:.98; color:var(--beige); font-weight:300; }
+    .hero .cta{ display:flex; gap:12px; flex-wrap:wrap; }
+    .btn{ display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:10px; font-weight:700; cursor:pointer; border:0; text-decoration:none; }
+    .btn-primary{ background:var(--beige); color:var(--vino); box-shadow: var(--shadow-strong); }
+    .btn-outline{ background:transparent; color:var(--beige); border:1px solid rgba(255,255,255,0.15); }
+
+    /* Right card */
+    .hero .right{ width:360px; min-width:240px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:14px; padding:18px; backdrop-filter: blur(6px); border:1px solid rgba(255,255,255,0.04); color:var(--beige); }
+    .hero .right h4{ margin:0 0 8px 0; font-family:'BaseNeue'; font-weight:700; color:var(--beige); }
+    .hero .right p{ margin:0 0 12px 0; font-size:14px; color:rgba(255,255,255,0.95) }
+
+    /* Sections */
+    section{ padding:72px 0 }
+    .section-title{ text-align:center; margin-bottom:28px; }
+    .section-title h2{ font-family:'Monas'; color:var(--vino); font-size:32px; margin:0; }
+    .section-sub{ max-width:880px; margin:14px auto 0 auto; color:var(--verde-oscuro); font-size:16px; line-height:1.6; text-align:center; }
+
+    /* Menu grid */
+    .menu-grid{ max-width:1100px; margin:28px auto 0; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:18px; padding:0 18px; }
+    .menu-card{ background: linear-gradient(180deg, rgba(1,41,27,0.03), rgba(59,0,20,0.02)); border-radius:12px; padding:18px; border:1px solid rgba(0,0,0,0.04); }
+    .menu-card h4{ font-weight:700; margin:0 0 8px 0; color:var(--verde-oscuro) }
+    .menu-card p{ margin:0; font-size:14px; color:rgba(0,0,0,0.7) }
+
+   /* Carrusel */
+.carousel {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.carousel-track::-webkit-scrollbar {
+  height: 8px;
+}
+.carousel-track::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
+.carousel img {
+  width: 320px;
+  height: 220px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Botones */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  color: white;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+  transition: all .25s ease;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.55);
+}
+
+.carousel-btn.prev { left: 6px; }
+.carousel-btn.next { right: 6px; }
+
+/* Móvil */
+@media (max-width: 768px) {
+  .carousel img { width: 260px; height: 180px; }
+  .carousel-btn { display: none; }
+}
+
+    /* Contact grid */
+    .contact-grid{ max-width:1100px; margin:18px auto 0; display:grid; grid-template-columns: 1fr 360px; gap:24px; padding:0 18px; }
+    .contact-card{ background:rgba(1,41,27,0.03); padding:18px; border-radius:12px; border:1px solid rgba(0,0,0,0.04); }
+
+    /* Footer */
+    footer{ background:var(--verde-oscuro); color:var(--beige); padding:28px 20px; text-align:center; margin-top:36px; }
+
+    /* WhatsApp */
+    .whatsapp{ position:fixed; right:18px; bottom:18px; z-index:80; }
+    .whatsapp a{ display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; padding:12px 14px; border-radius:999px; box-shadow:0 10px 30px rgba(0,0,0,0.22); font-weight:700; }
+
+    /* Responsive */
+    @media (max-width:980px){ .hero .row{ padding:0 12px } .hero .right{ width:320px } }
+    @media (max-width:780px){
+      nav.desktop{ display:none }
+      .mobile-toggle{ display:inline-block }
+      .hero{ min-height:60vh }
+      .hero .row{ gap:20px }
+      .hero .right{ order:3; width:100% }
+      .hero .left{ flex-basis:100% }
+      .gallery{ grid-template-columns:repeat(2,1fr) }
+      .contact-grid{ grid-template-columns:1fr }
+      .hero p.lead{ font-size:15px }
+      .mobile-panel .panel{ width:100%; max-width:100%; border-radius:0 }
+    }
+    @media (max-width:420px){ .gallery img{ height:160px } .logo{ width:120px } }
+
+    .visually-hidden{ position:absolute!important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap }
+    
+    /* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animaciones base */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero animation */
+.hero .left, 
+.hero .right {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: heroFade 1.2s ease-out forwards;
+}
+.hero .right {
+  animation-delay: .3s;
+}
+@keyframes heroFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botón mejorado */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: all .25s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 120%;
+  height: 100%;
+  background: rgba(255,255,255,0.35);
+  transform: skewX(-20deg);
+  transition: .5s;
+}
+.btn-primary:hover::after {
+  left: 150%;
+}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+<header>
+  <div class="nav-inner">
+    
+    <div class="logo-wrap">
+      <a href="index.html"> <!-- Cambia por tu ruta real -->
+        <img src="img/Logo.png" alt="Acamalin - logo" class="logo" />
+      </a>
+    </div>
+
+    <nav class="desktop" aria-label="Navegación principal">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#menu">Menú</a>
+      <a href="#galeria">Galería</a>
+      <a href="#contacto" class="btn btn-primary" style="padding:10px 14px; font-size:14px;">Reservar</a>
+    </nav>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-controls="mobilePanel" aria-expanded="false" aria-label="Abrir menú">
+      ☰
+    </button>
+  </div>
+</header>
+
+
+  <!-- MOBILE PANEL -->
+  <div class="mobile-panel" id="mobilePanel" aria-hidden="true">
+    <div class="overlay" id="mobileOverlay" tabindex="-1"></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-label="Menú principal">
+      <button class="close" id="mobileClose" aria-label="Cerrar menú">✕</button>
+      <nav>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#menu">Menú</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto" class="btn btn-primary" style="margin-top:12px; display:inline-block;">Reservar</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero" aria-label="Hero - Acamalin">
+      <div class="hero-bg" role="img" aria-hidden="true"></div>
+      <div class="overlay" aria-hidden="true"></div>
+
+      <div class="content">
+        <div class="row">
+          <div class="left">
+            <h1>ACAMALIN</h1>
+            <p class="lead">Sabores de Xico, Veracruz — tradición y técnica en cada plato. Cocina de mercado, ingredientes locales y platos diseñados para compartir.</p>
+
+            <div class="cta">
+              <a class="btn btn-primary" href="#contacto">Reservar mesa</a>
+              <a class="btn btn-outline" href="#menu">Ver menú</a>
+            </div>
+          </div>
+
+          <aside class="right" aria-label="Información rápida">
+            <h4>Horario</h4>
+            <p>Sáb - Dom · 11:00 — 18:00</p>
+            <h4>Dirección</h4>
+            <p>Venustiano Carranza Nte. 40, Xico, 91240 Xico, Ver.</p>
+            <h4>Teléfono</h4>
+            <p><a href="tel:+52 228 813 0285">+52 228 813 0285</a></p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOSOTROS -->
+    <section id="nosotros" aria-labelledby="nosotros-title" style="padding-bottom: 0;">
+      <div class="container">
+        <div class="section-title">
+          <h2 id="nosotros-title">Nuestra Historia</h2>
+          <p class="section-sub">Ubicado en el corazón del Pueblo Mágico de Xico, Veracruz, Acamalin no es solo un restaurante; es un portal a la historia y un homenaje a las raíces que sostienen esta tierra. Su nombre, inspirado en el majestuoso Cerro Acamalin que vigila nuestro pueblo, evoca la solidez de la montaña y la belleza de los carrizos que crecen en sus faldas, un símbolo de vida y tradición..</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENÚ -->
+    <section id="menu" aria-labelledby="menu-title" style="background:transparent;">
+      <div class="container">
+        <div class="section-title">
+          <h2 id="menu-title">Menú</h2>
+          <p class="section-sub">Les mostramos algunos de nuestros platillos mas representativos </p>
+        </div>
+
+        <div class="menu-grid" aria-live="polite">
+          <article class="menu-card">
+            <h4>Especialidad de la casa</h4>
+            <p>Lengua a la veracruzana — $135</p>
+          </article>
+
+          <article class="menu-card">
+            <h4>Entradas</h4>
+            <p>Patas de cerdo en escabeche — $86</p>
+          </article>
+
+          <article class="menu-card">
+            <h4>Postres</h4>
+            <p>Plátanos fritos con crema — $35</p>
+          </article>
+
+          <article class="menu-card">
+            <h4>Sopas</h4>
+            <p>Consomé con verduras y pollo — $46</p>
+          </article>
+
+          <article class="menu-card">
+            <h4>Bebidas</h4>
+            <p>Fanta, Sprite, Fresca, Manzanita, Agua Mineral, Sidral — $29</p>
+          </article>
+
+          <article class="menu-card">
+  <h4>Plato Fuerte</h4>
+  <p>Arroz con huevo/plátanos/mole/chile relleno — $68</p>
+</article>
+
+<article class="menu-card">
+  <h4>Carnes</h4>
+  <p>Cecina con enchiladas — $160</p>
+</article>
+
+          <article class="menu-card">
+            <h4>Trucha</h4>
+            <p>Con champiñones y queso — $146</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    
+<div style="text-align:center; margin-top:32px;">
+  <a href="./Menú/index.html" class="btn btn-primary" style="padding:12px 28px; font-size:16px;">Ver menú completo</a>
+</div>
+    <!-- GALERÍA -->
+<section id="galeria" aria-labelledby="galeria-title">
+  <div class="container">
+    <div class="section-title">
+      <h2 id="galeria-title">Galería</h2>
+      <p class="section-sub">Un vistazo a nuestros platos y al espacio.</p>
+    </div>
+
+    <div class="carousel">
+
+      <button class="carousel-btn prev" id="prevGallery">‹</button>
+      <button class="carousel-btn next" id="nextGallery">›</button>
+
+      <div class="carousel-track" id="galleryTrack">
+        <img src="img/Mole.jpg" alt="Plato 1" loading="lazy">
+        <img src="img/Plato 2.jpg" alt="Plato 2" loading="lazy">
+        <img src="img/Plato 4.jpg" alt="Plato 3" loading="lazy">
+        <img src="img/Plato 3.jpg" alt="Plato 4" loading="lazy">
+        <img src="img/Mesas.jpg" alt="Plato 5" loading="lazy">
+        <img src="img/Plato 6.jpg" alt="Plato 6" loading="lazy">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+    <!-- CONTACTO -->
+    <section id="contacto" aria-labelledby="contacto-title">
+      <div class="container">
+        <div class="section-title">
+          <h2 id="contacto-title">Contacto & Reservas</h2>
+          <p class="section-sub">Reserva por WhatsApp o llámanos. También puedes visitarnos en el centro de Xico.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>Reserva</h3>
+            <p>Puedes enviarnos un WhatsApp con la fecha y número de personas y confirmaremos en breve.</p>
+
+            <form id="bookForm" onsubmit="event.preventDefault(); handleDemoSubmit();">
+              <label style="display:block; font-weight:700; margin-top:12px">Nombre</label>
+              <input type="text" name="name" required style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); margin-top:6px;" />
+              <label style="display:block; font-weight:700; margin-top:12px">Fecha y hora</label>
+              <input type="datetime-local" name="date" required style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); margin-top:6px;" />
+              <label style="display:block; font-weight:700; margin-top:12px">Personas</label>
+              <input type="number" name="guests" min="1" value="2" required style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); margin-top:6px;" />
+              <button type="submit" class="btn btn-primary" style="margin-top:12px;">Enviar solicitud</button>
+            </form>
+          </div>
+          
+
+          <aside class="contact-card">
+            <h4>Información</h4>
+            <p><strong>Dirección:</strong> Venustiano Carranza Nte. 40, Xico, 91240 Xico, Ver.</p>
+            <p><strong>Teléfono:</strong> <a href="tel:+52 228 813 0285">+52 228 813 0285</a></p>
+            <p><strong>Horario:</strong> Sáb - Dom · 11:00 — 18:00</p>
+
+            <h4 style="margin-top:16px;">Cómo llegar</h4>
+            <div style="width:100%; height:200px; border-radius:10px; overflow:hidden; margin-top:8px;">
+              <iframe title="Ubicación de Acamalin en Xico, Veracruz" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.814382749793!2d-97.01018082508733!3d19.42042434107029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85c4d4a7eda24f5b%3A0x714e33e4acdbbf20!2sRestaurante%20Acamalin!5e0!3m2!1ses-419!2smx!4v1764040007841!5m2!1ses-419!2smx" style="width:100%;height:100%;border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <small>© 2025 Acamalin. Todos los derechos reservados. Diseñado por Owen Alvarado.</small>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOTANTE -->
+  <div class="whatsapp" aria-hidden="false">
+    <a href="https://wa.me/2281576200?text=Hola%20Acamalin%20quiero%20hacer%20una%20reserva" target="_blank" rel="noopener noreferrer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block">
+        <path d="M12.04 2C6.48 2 2 6.48 2 12.04c0 2.12.66 4.07 1.8 5.72L2 22l4.47-1.42c1.51.83 3.2 1.27 4.97 1.27 5.56 0 10.04-4.48 10.04-10.04C22.08 6.48 17.6 2 12.04 2z" fill="#25D366"/>
+        <path d="M17.7 14.52c-.36-.18-2.12-1.05-2.45-1.17-.33-.12-.57-.18-.81.18-.24.36-.92 1.17-1.12 1.41-.2.24-.4.27-.76.09-.36-.18-1.5-.55-2.86-1.76-1.06-.94-1.78-2.1-1.99-2.46-.21-.36-.02-.55.16-.73.16-.16.36-.4.54-.6.18-.2.24-.36.36-.6.12-.24.06-.45-.03-.63-.09-.18-.81-1.96-1.11-2.68-.29-.66-.59-.57-.81-.58-.21-.01-.45-.01-.69-.01-.24 0-.63.09-.96.45-.33.36-1.26 1.23-1.26 2.99s1.29 3.47 1.47 3.72c.18.24 2.52 3.81 6.13 5.34 3.61 1.53 3.61 1.02 4.26.96.65-.06 2.1-.86 2.4-1.69.3-.83.3-1.55.21-1.69-.09-.14-.33-.24-.69-.42z" fill="#fff"/>
+      </svg>
+    WhatsApp
+    </a>
+  </div>
+
+  <script>
+    /* Mobile panel logic (accessible) */
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobilePanel = document.getElementById('mobilePanel');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const mobileClose = document.getElementById('mobileClose');
+
+    function openMobile(){
+      mobilePanel.classList.add('open');
+      mobilePanel.setAttribute('aria-hidden','false');
+      mobileToggle.setAttribute('aria-expanded','true');
+      // focus first link
+      const firstLink = mobilePanel.querySelector('nav a');
+      if(firstLink) firstLink.focus();
+      // prevent body scroll
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobile(){
+      mobilePanel.classList.remove('open');
+      mobilePanel.setAttribute('aria-hidden','true');
+      mobileToggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+      mobileToggle.focus();
+    }
+
+    mobileToggle.addEventListener('click', () => {
+      const open = mobilePanel.classList.contains('open');
+      if(open) closeMobile(); else openMobile();
+    });
+    mobileClose.addEventListener('click', closeMobile);
+    mobileOverlay.addEventListener('click', closeMobile);
+
+    // close with Escape
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeMobile();
+    });
+
+    // Close panel when clicking any internal link (improves UX)
+    mobilePanel.querySelectorAll('nav a').forEach(a=>{
+      a.addEventListener('click', () => closeMobile());
+    });
+
+    /* Smooth scroll for anchor links */
+    (function(){
+      const links = document.querySelectorAll('a[href^="#"]');
+      for(const link of links){
+        link.addEventListener('click', function(e){
+          const href = this.getAttribute('href');
+          if(href && href.length > 1 && href.startsWith('#')){
+            e.preventDefault();
+            const el = document.querySelector(href);
+            if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        });
+      }
+    })();
+
+    /* Demo form submit handler */
+    function handleDemoSubmit(){
+      alert('Formulario demo — conectar backend o WhatsApp API');
+    }
+     function handleDemoSubmit(){
+    const form = document.getElementById("bookForm");
+    const name = form.name.value;
+    const date = form.date.value;
+    const guests = form.guests.value;
+
+    const msg = `Hola, buen día, quiero hacer una reserva:%0A%0A• Nombre: ${name}%0A• Fecha y hora: ${date}%0A• Personas: ${guests}`;
+    const phone = "2281576200";
+
+    window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+  }
+  </script>
+  <script>
+  const track = document.getElementById("galleryTrack");
+  const prev = document.getElementById("prevGallery");
+  const next = document.getElementById("nextGallery");
+
+  next.addEventListener("click", () => {
+    track.scrollBy({ left: 340, behavior: "smooth" });
+  });
+
+  prev.addEventListener("click", () => {
+    track.scrollBy({ left: -340, behavior: "smooth" });
+  });
+</script>
+</body>
+</html>
